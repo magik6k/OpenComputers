@@ -14,6 +14,7 @@ import li.cil.oc.api.machine.Callback
 import li.cil.oc.api.machine.Context
 import li.cil.oc.api.network._
 import li.cil.oc.api.prefab
+import li.cil.oc.common.tileentity.traits.ComponentInventory
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.ExtendedNBT._
 import net.minecraft.nbt.NBTTagCompound
@@ -279,7 +280,8 @@ class FileSystem(val fileSystem: IFileSystem, var label: Label, val host: Option
     fileSystem.load(nbt.getCompoundTag("fs"))
   }
 
-  override def save(nbt: NBTTagCompound) = fileSystem.synchronized {
+  override def save(nbt: NBTTagCompound): Unit = fileSystem.synchronized {
+    if(ComponentInventory.something) new NBTTagCompound
     super.save(nbt)
 
     val ownersNbt = new NBTTagList()

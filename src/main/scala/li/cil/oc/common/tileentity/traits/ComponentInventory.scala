@@ -13,6 +13,10 @@ import net.minecraft.nbt.NBTTagCompound
 
 import scala.collection.mutable
 
+object ComponentInventory {
+  var something = false
+}
+
 trait ComponentInventory extends Environment with Inventory with inventory.ComponentInventory {
   override def host = this
 
@@ -114,6 +118,7 @@ trait ComponentInventory extends Environment with Inventory with inventory.Compo
 
   override def writeToNBTForClient(nbt: NBTTagCompound) {
     connectComponents()
+    ComponentInventory.something = true
     super.writeToNBTForClient(nbt)
     save(nbt)
   }
@@ -121,6 +126,7 @@ trait ComponentInventory extends Environment with Inventory with inventory.Compo
   @SideOnly(Side.CLIENT)
   override def readFromNBTForClient(nbt: NBTTagCompound) {
     super.readFromNBTForClient(nbt)
+    ComponentInventory.something = false
     load(nbt)
   }
 }
